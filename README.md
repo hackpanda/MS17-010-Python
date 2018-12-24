@@ -1,4 +1,4 @@
-# MS17-010_WORAWIT
+# MS17-010 zzz_exploit.py modifications
 All credit goes to Worawit: https://github.com/worawit/MS17-010/
 
 This is my personal enhancement to zzz_exploit.py. Added functionality to dynamically pass users, passwords and commands to execute within a service.
