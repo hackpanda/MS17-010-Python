@@ -35,7 +35,7 @@ optional arguments:
   -p , --password   Password for specified user
   -t , --target     Target for exploitation
   -c , --command    Command to add to service
-  -P , --pipe       Command to add to service
+  -P , --pipe       Pipe to connect to
   --version         show program's version number and exit
   ```
 
