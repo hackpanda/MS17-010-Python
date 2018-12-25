@@ -7,6 +7,8 @@ This is also heavily inspired by Korey McKinley: https://lmgsecurity.com/manuall
 
 Full credit goes to Worawit/Sleepya and Korey McKinley!
 
+Best usage, and what I tested it with, is using the web_delivery module in metasploit. With the generated command, pass it into -c in quotes. This is also what Korey showed in his article!
+
 ## Help page output:
 ```
 ➜  MS17-010 git:(master) ✗ ./zzz_exploit.py --help                                                                                        
