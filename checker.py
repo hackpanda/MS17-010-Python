@@ -6,6 +6,7 @@ from struct import pack
 import sys
 import argparse
 import logger
+from ip_parser import parse_targets
 
 '''
 Script for
@@ -14,10 +15,10 @@ Script for
 '''
 
 
-parser = argparse.ArgumentParser(description='MS17-010 Checker script',epilog="Example: python checker.py -t 192.168.0.1")
+parser = argparse.ArgumentParser(description='MS17-010 Checker script',epilog="Example: python checker.py -t 192.168.0.1-100")
 parser.add_argument("-u", "--user", type=str, metavar="",help="Username to authenticate with")
 parser.add_argument("-p", "--password", type=str, metavar="",help="Password for specified user")
-parser.add_argument("-t", "--target", required=True, type=str, metavar="", help="Target to check for MS17-010")
+parser.add_argument("-t", "--target", required=True, type=str, metavar="", help="Target (IP, range, CIDR) to check for MS17-010")
 parser.add_argument('--version', action='version', version='%(prog)s 0.1')
 args = parser.parse_args()
 
@@ -49,54 +50,56 @@ pipes = {
 	'samr'     : MSRPC_UUID_SAMR,
 }
 
-target = args.target
-
-try:
-	conn = MYSMB(target)
+for target in parse_targets(args.target):
 	try:
-		conn.login(USERNAME, PASSWORD)
-	except smb.SessionError as e:
-		logger.error('LOGIN FAILED: ' + nt_errors.ERROR_MESSAGES[e.error_code][0])
-		sys.exit()
-	finally:
-		logger.info('TARGET OS: ' + conn.get_server_os())
-
-	tid = conn.tree_connect_andx('\\\\'+target+'\\'+'IPC$')
-	conn.set_default_tid(tid)
-
-	# test if target is vulnerable
-	TRANS_PEEK_NMPIPE = 0x23
-	recvPkt = conn.send_trans(pack('<H', TRANS_PEEK_NMPIPE), maxParameterCount=0xffff, maxDataCount=0x800)
-	status = recvPkt.getNTStatus()
-	if status == 0xC0000205:  # STATUS_INSUFF_SERVER_RESOURCES
-		logger.success('{} IS NOT PATCHED!'.format(target))
-	else:
-		logger.error('{} IS PATCHED!'.format(target))
-		sys.exit()
-
-
-	logger.action('CHECKING NAMED PIPES...')
-	for pipe_name, pipe_uuid in pipes.items():
+		logger.info('*'*40)
+		logger.info('CONNECTING TO HOST - {}'.format(target))
+		conn = MYSMB(target, timeout=5)
 		try:
-			dce = conn.get_dce_rpc(pipe_name)
-			dce.connect()
-			try:
-				dce.bind(pipe_uuid, transfer_syntax=NDR64Syntax)
-				logger.success('{}: OK (64 bit)'.format(pipe_name))
-			except DCERPCException as e:
-				if 'transfer_syntaxes_not_supported' in str(e):
-					logger.success('{}: OK (32 bit)'.format(pipe_name))
-				else:
-					logger.success('{}: OK ({})'.format(pipe_name, str(e)))
-			dce.disconnect()
+			conn.login(USERNAME, PASSWORD)
 		except smb.SessionError as e:
-			logger.error('{}: {}'.format(pipe_name, nt_errors.ERROR_MESSAGES[e.error_code][0]))
-		except smbconnection.SessionError as e:
-			logger.error('{}: {}'.format(pipe_name, nt_errors.ERROR_MESSAGES[e.error][0]))
+			logger.error('LOGIN FAILED: ' + nt_errors.ERROR_MESSAGES[e.error_code][0])
+			sys.exit()
+		finally:
+			logger.info('TARGET OS: ' + conn.get_server_os())
 
+		tid = conn.tree_connect_andx('\\\\' + target + '\\' + 'IPC$')
+		conn.set_default_tid(tid)
 
-	conn.disconnect_tree(tid)
-	conn.logoff()
-	conn.get_socket().close()
-except:
-	logger.error ('COULD NOT CONNECT TO HOST')
+		# test if target is vulnerable
+		TRANS_PEEK_NMPIPE = 0x23
+		recvPkt = conn.send_trans(pack('<H', TRANS_PEEK_NMPIPE), maxParameterCount=0xffff, maxDataCount=0x800)
+		status = recvPkt.getNTStatus()
+		if status == 0xC0000205:  # STATUS_INSUFF_SERVER_RESOURCES
+			logger.success('{} IS NOT PATCHED!'.format(target))
+		else:
+			logger.error('{} IS PATCHED!'.format(target))
+			sys.exit()
+
+		logger.action('CHECKING NAMED PIPES...')
+		for pipe_name, pipe_uuid in pipes.items():
+			try:
+				dce = conn.get_dce_rpc(pipe_name)
+				dce.connect()
+				try:
+					dce.bind(pipe_uuid, transfer_syntax=NDR64Syntax)
+					logger.success('\t{}: OK (64 bit)'.format(pipe_name))
+				except DCERPCException as e:
+					if 'transfer_syntaxes_not_supported' in str(e):
+						logger.success('\t{}: OK (32 bit)'.format(pipe_name))
+					else:
+						logger.success('\t{}: OK ({})'.format(pipe_name, str(e)))
+				dce.disconnect()
+			except smb.SessionError as e:
+				logger.error('\t{}: {}'.format(pipe_name, nt_errors.ERROR_MESSAGES[e.error_code][0]))
+			except smbconnection.SessionError as e:
+				logger.error('\t{}: {}'.format(pipe_name, nt_errors.ERROR_MESSAGES[e.error][0]))
+
+		conn.disconnect_tree(tid)
+		conn.logoff()
+		conn.get_socket().close()
+	except (KeyboardInterrupt, SystemExit):
+		logger.error('Keyboard interrupt received..')
+		sys.exit(-1)
+	except:
+		logger.error('COULD NOT CONNECT TO HOST - {}'.format(target))

