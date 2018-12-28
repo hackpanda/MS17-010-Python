@@ -8,7 +8,7 @@ greenbg = "\033[42;1m"
 redbg = "\033[41;1m"
 remove = "\033[0m"
 
-
+spacing="\t"
 
 def RED(string): return (red + string + remove)
 def BLUE(string): return (blue + string + remove)
@@ -20,19 +20,18 @@ def REDBG(string): return (redbg + string + remove)
 
 def info(string):
 	cur_time=strftime("%H:%M:%S", gmtime())
-	print(BLUE("[{}]  [INFO]: ".format(cur_time)) + string)
+	print(BLUE("[{}]  [INFO]: ".format(cur_time)) + spacing + string)
 
 def action(string):
 	cur_time=strftime("%H:%M:%S", gmtime())
-	print(YELLOW("[{}]  [ACTION]: ".format(cur_time)) + string)
-
+	print(YELLOW("[{}]  [ACTION]: ".format(cur_time)) + spacing + string)
 def error(string):
 	cur_time=strftime("%H:%M:%S", gmtime()) 
-	print(RED("[{}]  [ERROR]: ".format(cur_time)) + string)
+	print(RED("[{}]  [ERROR]: ".format(cur_time)) + spacing + string)
 
 def success(string):
 	cur_time=strftime("%H:%M:%S", gmtime()) 
-	print(GREEN("[{}]  [SUCCESS]: ".format(cur_time)) + string)
+	print(GREEN("[{}]  [SUCCESS]: ".format(cur_time)) + spacing + string)
 
 def title(string):
 	cur_time=strftime("%H:%M:%S", gmtime())  
