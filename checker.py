@@ -20,7 +20,8 @@ User friendliness by @mez0cc
 parser = argparse.ArgumentParser(description='MS17-010 Checker script',epilog="Example: python checker.py -t 192.168.0.1")
 parser.add_argument("-u", "--user", type=str, metavar="",help="Username to authenticate with")
 parser.add_argument("-p", "--password", type=str, metavar="",help="Password for specified user")
-parser.add_argument("-t", "--target", required=True, type=str, metavar="", help="Target to check for MS17-010")
+parser.add_argument("-t", "--target", type=str, metavar="", help="Specify a host or a subnet")
+parser.add_argument("-f", "--file", type=str, metavar="", help="Specify a list of subnets or hosts from a file")
 parser.add_argument('--version', action='version', version='%(prog)s 0.2')
 args = parser.parse_args()
 
@@ -61,6 +62,7 @@ def checker(host):
 			logger.error('LOGIN FAILED: ' + nt_errors.ERROR_MESSAGES[e.error_code][0])
 			sys.exit()
 		finally:
+			logger.info('CONNECTED TO {}'.format(logger.BLUE(host)))
 			logger.info('TARGET OS: ' + conn.get_server_os())
 
 		tid = conn.tree_connect_andx('\\\\'+target+'\\'+'IPC$')
@@ -101,14 +103,34 @@ def checker(host):
 		conn.logoff()
 		conn.get_socket().close()
 	except:
-		logger.error ('COULD NOT CONNECT TO {}'.format(host))
+		logger.error('COULD NOT CONNECT TO {}'.format(logger.RED(host)))
 
 def check_subnet(addr):
 	sub_range = IPNetwork(addr)
 	for i in sub_range:
-		checker(i)
+		checker(str(i))
 
-if "/" in args.target:
-	check_subnet(target)
-elif "/" not in args.target:
-	checker(target)
+# def fromFile(file):
+# 	hosts_file = open(file,"r")
+# 	for line in hosts_file:
+# 		if "/" in line:
+# 			check_subnet(line)
+# 		elif "/" not in line:
+# 			sub_range = IPNetwork(line)
+# 			for i in sub_range:
+# 				checker(str(i))
+
+if args.target:
+	if "/" in args.target:
+		check_subnet(target)
+
+	elif "/" not in args.target:
+		checker(target)
+
+elif args.file:	
+	logger.error('This option is currently broken. See GitHub for more information.')
+	# fromFile(args.file)
+
+else:
+	logger.error('No host specified. Use either -f or -t for hosts.\n')
+	parser.print_help()
