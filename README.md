@@ -1,7 +1,9 @@
 # MS17-010: Python
 All credit goes to Worawit: 
-[GitHub](https://github.com/worawit/MS17-010/)
-[Twitter](https://twitter.com/sleepya_/)
+
+[Worawit Wang: GitHub](https://github.com/worawit/MS17-010/)
+
+[Worawit Wang: Twitter](https://twitter.com/sleepya_/)
 
 Worawit Wang released a collection of Python exploits for MS17-010. These tools worked far more reliably than the Metasploit modules but didn't have much of a payload besides writing a pwned.txt to the C:/. However, Worawit Wang did add functionality for creating a service. 
 
