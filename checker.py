@@ -73,7 +73,7 @@ def checker(host):
 		recvPkt = conn.send_trans(pack('<H', TRANS_PEEK_NMPIPE), maxParameterCount=0xffff, maxDataCount=0x800)
 		status = recvPkt.getNTStatus()
 		if status == 0xC0000205:  # STATUS_INSUFF_SERVER_RESOURCES
-			logger.success('{} IS NOT PATCHED!'.format(target))
+			logger.success('{} IS NOT PATCHED!'.format(logger.GREEN(target)))
 		else:
 			logger.error('{} IS PATCHED!'.format(target))
 			sys.exit()
@@ -134,3 +134,4 @@ elif args.file:
 else:
 	logger.error('No host specified. Use either -f or -t for hosts.\n')
 	parser.print_help()
+
