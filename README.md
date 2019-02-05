@@ -100,19 +100,19 @@ I made similar changes to checker.py, but the only additional logic I added was 
 Here is the help page for checker.py:
 
 ```
-➜  MS17-010_WORAWIT git:(master) ✗ python checker.py --help         
-usage: checker.py [-h] [-u] [-p] -t  [--version]
+usage: checker.py [-h] [-u] [-p] [-t] [-tf] [--version]
 
 MS17-010 Checker script
 
 optional arguments:
-  -h, --help        show this help message and exit
-  -u , --user       Username to authenticate with
-  -p , --password   Password for specified user
-  -t , --target     Target to check for MS17-010
-  --version         show program's version number and exit
+  -h, --help            show this help message and exit
+  -u , --user           Username to authenticate with
+  -p , --password       Password for specified user
+  -t , --target         Target (IP, range, CIDR) to check for MS17-010
+  -tf , --target-file   Read from file. Can interpret CIDR and IP.
+  --version             show program's version number and exit
 
-Example: python checker.py -t 192.168.0.1
+Example: python checker.py -t 192.168.0.1-100
 ```
 Sample output:
 ```
@@ -126,7 +126,6 @@ Sample output:
 [08:37:26]  [SUCCESS]: 	netlogon: OK (64 bit)
 [08:37:26]  [SUCCESS]: 	lsarpc: OK (64 bit)
 [08:37:26]  [ERROR]: 	browser: STATUS_OBJECT_NAME_NOT_FOUND
-
 ```
 
 Any further ideas, changes or fixes; please let me know!
