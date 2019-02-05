@@ -1,4 +1,4 @@
-from netaddr import IPAddress, IPRange, IPNetwork, AddrFormatError
+from netaddr import IPAddress, IPRange, IPNetwork, AddrFormatError, iter_unique_ips
 
 def parse_targets(target):
     if '-' in target:
@@ -29,3 +29,16 @@ def parse_targets(target):
         return t
     else:
         return [str(t.strip())]
+
+def from_file(file):
+    ips=[]
+    OPENFILE=open(file,'r')
+    for line in OPENFILE:
+        if "/" in line:
+            subnet_ips=iter_unique_ips(line)
+            for ip in subnet_ips:
+                ips.append(ip)
+        else:
+            tmp=line.rstrip()
+            ips.append(tmp)
+    return ips
