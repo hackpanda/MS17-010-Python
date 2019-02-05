@@ -8,13 +8,6 @@ import argparse
 import logger
 from ip_parser import parse_targets,from_file
 
-'''
-Script for
-- check target if MS17-010 is patched or not.
-- find accessible named pipe
-'''
-
-
 parser = argparse.ArgumentParser(description='MS17-010 Checker script',epilog="Example: python checker.py -t 192.168.0.1-100")
 parser.add_argument("-u", "--user", type=str, metavar="",help="Username to authenticate with")
 parser.add_argument("-p", "--password", type=str, metavar="",help="Password for specified user")
