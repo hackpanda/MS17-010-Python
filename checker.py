@@ -12,8 +12,8 @@ parser = argparse.ArgumentParser(description='MS17-010 Checker script',epilog="E
 parser.add_argument("-u", "--user", type=str, metavar="",help="Username to authenticate with")
 parser.add_argument("-p", "--password", type=str, metavar="",help="Password for specified user")
 parser.add_argument("-t", "--target", type=str, metavar="", help="Target (IP, range, CIDR) to check for MS17-010")
-parser.add_argument("-tf", "--target-file", type=str, metavar="", help="Target (IP, range, CIDR) to check for MS17-010")
-parser.add_argument('--version', action='version', version='%(prog)s 0.1')
+parser.add_argument("-tf", "--target-file", type=str, metavar="", help="Read from file. Can interpret CIDR and IP.")
+parser.add_argument('--version', action='version', version='%(prog)s 0.2')
 args = parser.parse_args()
 
 
